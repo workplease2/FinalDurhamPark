@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Durham Parks Lead Contamination Map</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1 {
+            color: #0056b3;
+        }
+        h2 {
+            color: #0056b3;
+        }
+        p {
+            font-size: 1.3em;
+        }
+        #map {
+            height: 600px;
+            width: 100%;
+            margin-top: 20px;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #0056b3;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            cursor: pointer;
+            text-decoration: none;
+            margin-top: 20px;
+        }
+        .button:hover {
+            background-color: #004494;
+        }
+        .resources {
+            margin-top: 40px;
+            text-align: left;
+        }
+        .resources h3 {
+            color: #0056b3;
+        }
+        .resources ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .resources li {
+            margin-bottom: 10px;
+        }
+        .resources a {
+            color: #0056b3;
+            text-decoration: none;
+        }
+        .resources a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome, Durham Resident</h1>
+        <h2>Explore the Parks!</h2>
+        <p>Discover parks near you and learn about their safety features. Search for parks in your area to view reported lead levels, safety tips, and recommendations for a worry-free visit. Stay informed and enjoy your outdoor adventures with peace of mind!</p>
+        <p><strong>Click on the markers on the map to see directions to the park. You can hover over the markers to see pictures of the parks.</strong></p>
+        <div id="map"></div>
+        
+        <div class="resources">
+            <h3>Resources</h3>
+            <ul>
+                <li><a href="https://www.youtube.com/watch?v=1Hl_v9PXla0" target="_blank">Lead Contamination in Durham Parks</a> - View short video about lead contamination in Durham parks.</li>
+                <li><a href="https://www.youtube.com/watch?v=3xYFat7pFhA" target="_blank">Updates on Lead Contamination</a> - View video with updates on lead contamination in Durham parks.</li>
+                <li><a href="https://www.youtube.com/watch?v=UiS1c0rCSQc" target="_blank">Lead Contamination Issues</a> - View video on lead contamination issues impacting Durham parks.</li>
+                <li><a href="https://www.youtube.com/watch?v=5OiOlOR_vGo" target="_blank">Cleaning Up Lead Contamination</a> - View video on efforts to clean up lead contamination in Durham parks.</li>
+            </ul>
+        </div>
+    </div>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        // Initialize the map
+        var map = L.map('map').setView([36.0014, -78.9382], 12);
+
+        // Add OpenStreetMap tiles without attribution
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: ''
+        }).addTo(map);
+
+        // Add markers for parks with lead contamination
+        var parks = [
+            { name: "East Durham Park", coords: [35.9876, -78.8998], imageUrl: "East Durham Park.png", address: "2500 E Main St, Durham, NC 27703", link: "https://maps.google.com/maps?daddr=2500+E+Main+St,+Durham,+NC+27703" },
+            { name: "East End Park", coords: [35.9912, -78.8954], imageUrl: "East End Park.jpg", address: "1200 N Alston Ave, Durham, NC 27701", link: "https://maps.google.com/maps?daddr=1200+N+Alston+Ave,+Durham,+NC+27701" },
+            { name: "Lyon Park", coords: [35.9918, -78.9172], imageUrl: "Lyon Park.png", address: "1200 W Lakewood Ave, Durham, NC 27707", link: "https://maps.google.com/maps?daddr=1200+W+Lakewood+Ave,+Durham,+NC+27707" },
+            { name: "Northgate Park", coords: [36.0156, -78.9054], imageUrl: "Northgate Park.jpg", address: "300 W Club Blvd, Durham, NC 27704", link: "https://maps.google.com/maps?daddr=300+W+Club+Blvd,+Durham,+NC+27704" },
+            { name: "Walltown Park", coords: [36.0150, -78.9240], imageUrl: "Walltown Park.jpg", address: "1308 W Club Blvd, Durham, NC 27705", link: "https://maps.google.com/maps?daddr=1308+W+Club+Blvd,+Durham,+NC+27705" }
+        ];
+
+        parks.forEach(function(park) {
+            var marker = L.marker(park.coords).addTo(map)
+                .bindPopup('<b>' + park.name + '</b><br>' + park.address + '<br><img src="' + park.imageUrl + '" alt="' + park.name + '" style="width:100%;"><br>Lead contamination detected.');
+
+            marker.on('mouseover', function(e) {
+                this.openPopup();
+            });
+
+            marker.on('mouseout', function(e) {
+                if (!this.isPopupOpen) {
+                    this.closePopup();
+                }
+            });
+
+            marker.on('click', function(e) {
+                window.open(park.link, '_blank');
+            });
+        });
+    </script>
+</body>
+</html>
+
